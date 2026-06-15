@@ -3,10 +3,19 @@ let nextId = todos.length ? Math.max(...todos.map(t => t.id)) + 1 : 1;
 
 const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
+const prioritySelect = document.getElementById('priority-select');
 const list = document.getElementById('todo-list');
 const footer = document.getElementById('footer');
 const countEl = document.getElementById('count');
 const clearBtn = document.getElementById('clear-completed');
+const helpToggle = document.getElementById('help-toggle');
+const helpPanel = document.getElementById('help-panel');
+
+helpToggle.addEventListener('click', () => {
+  const isHidden = helpPanel.hidden;
+  helpPanel.hidden = !isHidden;
+  helpToggle.classList.toggle('active', isHidden);
+});
 
 function save() {
   localStorage.setItem('todos', JSON.stringify(todos));
@@ -29,13 +38,17 @@ function render() {
     label.htmlFor = `todo-${todo.id}`;
     label.textContent = todo.text;
 
+    const tag = document.createElement('span');
+    tag.className = `priority-tag ${todo.priority || 'medium'}`;
+    tag.textContent = todo.priority || 'medium';
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '✕';
     deleteBtn.title = 'Delete';
     deleteBtn.addEventListener('click', () => remove(todo.id));
 
-    li.append(checkbox, label, deleteBtn);
+    li.append(checkbox, label, tag, deleteBtn);
     list.appendChild(li);
   });
 
@@ -44,8 +57,8 @@ function render() {
   footer.hidden = todos.length === 0;
 }
 
-function add(text) {
-  todos.push({ id: nextId++, text, completed: false });
+function add(text, priority) {
+  todos.push({ id: nextId++, text, priority, completed: false });
   save();
   render();
 }
@@ -67,8 +80,9 @@ form.addEventListener('submit', e => {
   e.preventDefault();
   const text = input.value.trim();
   if (text) {
-    add(text);
+    add(text, prioritySelect.value);
     input.value = '';
+    prioritySelect.value = 'medium';
   }
 });
 

@@ -8,7 +8,22 @@
 </head>
 <body>
   <div class="container">
-    <h1>Todo List</h1>
+    <div class="header-row">
+      <h1>✅ Todo List</h1>
+      <button id="help-toggle" title="How to use">?</button>
+    </div>
+
+    <div id="help-panel" hidden>
+      <h2>How to use</h2>
+      <ul>
+        <li>Type a task and press <strong>Add</strong> or hit <strong>Enter</strong> to add it.</li>
+        <li>Choose a <strong>priority</strong> (Low, Medium, High) before adding.</li>
+        <li>Click the <strong>checkbox</strong> to mark a task complete.</li>
+        <li>Click <strong>✕</strong> to delete a task.</li>
+        <li>Use <strong>Clear completed</strong> to remove all finished tasks.</li>
+        <li>Your tasks are saved automatically in the browser.</li>
+      </ul>
+    </div>
 
     <form id="todo-form">
       <input
@@ -17,6 +32,11 @@
         placeholder="Add a new task..."
         autocomplete="off"
       />
+      <select id="priority-select">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
       <button type="submit">Add</button>
     </form>
 
